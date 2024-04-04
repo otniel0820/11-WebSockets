@@ -11,59 +11,73 @@ npm run dev
 ```
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <h1>Websockets-status</h1>
+  </head>
+  <body>
+    <h1>Websockets-<small>Status</small></h1>
 
     <form action="">
-        <input type="text" placeholder="Enviar Mensaje">
-        <button>Enviar</button>
+      <input type="text" placeholder="Enviar Mensaje" />
+      <button>Enviar</button>
     </form>
 
-    <ul id="messages">
-
-    </ul>
+    <ul id="messages"></ul>
 
     <script>
-        const socket = new WebSocket('ws://localhost:3000');
+        let socket = null
+      const form = document.querySelector("form");
+      const input = document.querySelector("input");
+      const messageElement = document.querySelector("#messages");
+      const statusElem = document.querySelector("small");
+      
+      function sendMessage(message) {
+        socket?.send(message);
+      }
+      function renderMessage(message) {
+        const li = document.createElement("li");
+        li.innerHTML = message;
+        messageElement.prepend(li);
+      }
 
-        const form = document.querySelector("form");
-        const input = document.querySelector("input");
-        const messageElement =  document.querySelector("#messages");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const message = input.value;
+        sendMessage(message);
+        input.value = "";
+      });
+      
+      function connectToServer(params) {
+        socket = new WebSocket("ws://localhost:3000");
 
-        function sendMessage(message) {
-            socket.send(message);
-        }
 
-        function renderMessage(message) {
-            const li = document.createElement('li')
-            li.innerHTML = message
-            messageElement.prepend(li)
-        }
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault()
-            const message = input.value
-            sendMessage(message);
-        })
         socket.onopen = (event) => {
-            
-            console.log('Client connected');
-        }
+          statusElem.innerHTML = "Online";
+        };
         socket.onclose = (event) => {
-            
-            console.log('Client disconnected');
-        }
+          statusElem.innerHTML = "Offline";
+          setTimeout(()=>{
+            connectToServer()
+          }, 1500)
+        };
         socket.onmessage = (e) => {
-            const {payload} = JSON.parse(e.data);
-            renderMessage(payload);
-        }
+          const { payload } = JSON.parse(e.data);
+          renderMessage(payload);
+        };
+      }
+
+      connectToServer();
     </script>
-</body>
+  </body>
 </html>
+
 ```
+
+3. Para Ejecutar el archivo html deben ejecutarlo por medio de la terminal con el siguiente comando 
+```
+npx http-server -o
+```
+
 
