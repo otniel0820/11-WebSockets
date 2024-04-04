@@ -4,7 +4,6 @@ const wss = new WebSocketServer({ port: 3000 });
 
 wss.on('connection', function connection(ws) {
 
-  console.log(ws);
   
   console.log('Client connected');
   

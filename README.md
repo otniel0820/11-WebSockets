@@ -1,4 +1,4 @@
-#Websockets
+# Websockets
 
 ## Esta aplicacion nos permite  comunicarnos de manera asincrona con el servidor a traves del protocolo websocket, por ejemplo podemos hacer que el cliente reciba respuesta sin hacer una peticion http.
 
@@ -6,7 +6,7 @@
 ```
 npm run dev
 ```
-2. Aqui estamos trabajando con un frotn basico creado en un documento html lo copiare aqui apra que tengan una referencia y no hacerle push a ese archivo
+2. Aqui estamos trabajando con un front basico creado en un documento html lo copiare aqui para que tengan una referencia y no hacerle push a ese archivo
 
 ```
 <!DOCTYPE html>
