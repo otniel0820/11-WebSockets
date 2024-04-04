@@ -19,11 +19,20 @@ wss.on('connection', function connection(ws) {
     }) 
     // ws.send(JSON.stringify(payload));
 
+    // * Crear mensaje a todos inclyendo el emisor 
+    // wss.clients.forEach(function each(client) {
+    //   if (client.readyState === WebSocket.OPEN) {
+    //     client.send(payload, { binary: false });
+    //   }
+    // });
+
+    // * Crear mensaje a todos excluyendo al emisor
     wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(payload, { binary: false });
       }
     });
+    
   });
 
   // ws.send('Hola desde el servidor');
